@@ -1,11 +1,10 @@
-package com.lperalta.ms.pricing.info.infraestructure.in.controller;
+package com.lperalta.ms.pricing.info.prices.infraestructure.in.controller;
 
 import com.lperalta.ms.pricing.info.prices.application.exception.InternalServerErrorException;
 import com.lperalta.ms.pricing.info.prices.application.exception.NotDataFoundException;
 import com.lperalta.ms.pricing.info.prices.application.exception.PriceConfigurationErrorException;
 import com.lperalta.ms.pricing.info.prices.application.service.PriceQueryService;
 import com.lperalta.ms.pricing.info.prices.domain.model.PriceQuery;
-import com.lperalta.ms.pricing.info.prices.infraestructure.in.controller.PriceController;
 import com.lperalta.ms.pricing.info.prices.infraestructure.in.dto.PriceQueryResponseDTO;
 import com.lperalta.ms.pricing.info.prices.infraestructure.in.mapper.PriceQueryMapper;
 import com.lperalta.ms.pricing.info.util.TestUtils;
