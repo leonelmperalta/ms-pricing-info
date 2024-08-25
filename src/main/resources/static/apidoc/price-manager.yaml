@@ -1,0 +1,179 @@
+openapi: 3.0.0
+info:
+  title: ms-pricing-info
+  version: 1.0.0
+paths:
+  /pricing-info/v1/price:
+    get:
+      summary: Get Price and Fee Information
+      description: |
+        Retrieves price and fee information for a given product and brand on a specific application date.
+      parameters:
+        - name: application_date
+          in: query
+          description: The date of the application in ISO 8601 format with time in UTC (e.g., "2024-02-28 12:34:56").
+          required: true
+          schema:
+            type: string
+        - name: product_id
+          in: query
+          description: The ID of the product.
+          required: true
+          schema:
+            type: string
+        - name: brand_id
+          in: query
+          description: The ID of the brand.
+          required: true
+          schema:
+            type: string
+      tags:
+        - pricing-info-controller_v1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                meta_data:
+                  method: "GET"
+                  operation: "/price-manager/v1/price"
+                data:
+                  - product_id: "35455"
+                    brand_id: "1"
+                    fee_id: 1
+                    start_date: "2020-06-14 00:00:00"
+                    end_date: "2020-12-31 23:59:59"
+                    final_amount: 120.99
+                    currency: "EUR"
+                errors: []
+              schema:
+                type: object
+                properties:
+                  meta_data:
+                    $ref: '#/components/schemas/MetaData'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DataItem'
+                  errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorItem'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              example:
+                meta_data:
+                  method: "GET"
+                  operation: "/price-manager/v1/price"
+                data: []
+                errors:
+                  - code: "400_ERROR"
+                    description: "Parameter <product_id> is required."
+              schema:
+                type: object
+                properties:
+                  meta_data:
+                    $ref: '#/components/schemas/MetaData'
+                  data:
+                    type: array
+                    items: {}
+                  errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorItem'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                meta_data:
+                  method: "GET"
+                  operation: "/price-manager/v1/price"
+                data: []
+                errors:
+                  - code: "404_ERROR"
+                    description: "Not data found for given parameters."
+              schema:
+                type: object
+                properties:
+                  meta_data:
+                    $ref: '#/components/schemas/MetaData'
+                  data:
+                    type: array
+                    items: {}
+                  errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorItem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                meta_data:
+                  method: "GET"
+                  operation: "/price-manager/v1/price"
+                data: []
+                errors:
+                  - code: "500_ERROR"
+                    description: "Internal server error"
+              schema:
+                type: object
+                properties:
+                  meta_data:
+                    $ref: '#/components/schemas/MetaData'
+                  data:
+                    type: array
+                    items: {}
+                  errors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ErrorItem'
+components:
+  schemas:
+    MetaData:
+      type: object
+      properties:
+        method:
+          description: Operation method
+          type: string
+        operation:
+          description: Operation path
+          type: string
+
+    DataItem:
+      type: object
+      properties:
+        product_id:
+          description: Product identifier
+          type: string
+        brand_id:
+          description: Brand identifier
+          type: string
+        fee_id:
+          description: The identifier of the fee that is going to be applied
+          type: number
+        start_date:
+          description: A date (ISO 8601 format with time in UTC) where the fee starts to apply to the product
+          type: string
+        end_date:
+          description: A date (ISO 8601 format with time in UTC) where the fee ends to apply to the product
+          type: string
+        final_amount:
+          description: The final amount of the product (PVP)
+          type: number
+        currency:
+          description: The currency of the final amount of the product
+          type: string
+    ErrorItem:
+      type: object
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+tags:
+  - name: pricing-info-controller_v1
