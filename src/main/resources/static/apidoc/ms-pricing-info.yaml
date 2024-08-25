@@ -20,13 +20,13 @@ paths:
           description: The ID of the product.
           required: true
           schema:
-            type: string
+            type: number
         - name: brand_id
           in: query
           description: The ID of the brand.
           required: true
           schema:
-            type: string
+            type: number
       tags:
         - pricing-info-controller_v1
       responses:
@@ -39,8 +39,8 @@ paths:
                   method: "GET"
                   operation: "/price-manager/v1/price"
                 data:
-                  - product_id: "35455"
-                    brand_id: "1"
+                  - product_id: 35455
+                    brand_id: 1
                     fee_id: 1
                     start_date: "2020-06-14 00:00:00"
                     end_date: "2020-12-31 23:59:59"
@@ -149,10 +149,10 @@ components:
       properties:
         product_id:
           description: Product identifier
-          type: string
+          type: number
         brand_id:
           description: Brand identifier
-          type: string
+          type: number
         fee_id:
           description: The identifier of the fee that is going to be applied
           type: number
