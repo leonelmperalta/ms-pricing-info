@@ -39,7 +39,7 @@ class PriceControllerTest {
             throws InternalServerErrorException, NotDataFoundException, PriceConfigurationErrorException {
         Long brandId = 1L;
         Long productId = 35455L;
-        String applicationDate = "2020-06-15T18:00:00";
+        String applicationDate = "2020-06-15 18:00:00";
         PriceQuery priceQuery = TestUtils.singlePriceQuery().get(0);
 
         Mockito.when(this.priceQueryService.priceQuery(eq(brandId), eq(productId), eq(applicationDate)))
