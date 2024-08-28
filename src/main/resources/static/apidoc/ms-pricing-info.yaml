@@ -1,9 +1,9 @@
 openapi: 3.0.0
 info:
-  title: ms-pricing-info
+  title: price-manager
   version: 1.0.0
 paths:
-  /pricing-info/v1/price:
+  /price-manager/v1/price:
     get:
       summary: Get Price and Fee Information
       description: |
@@ -15,20 +15,26 @@ paths:
           required: true
           schema:
             type: string
+            pattern: "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$"
         - name: product_id
           in: query
           description: The ID of the product.
           required: true
           schema:
-            type: number
+            type: integer
+            format: int64
+            minimum: 1
         - name: brand_id
           in: query
           description: The ID of the brand.
           required: true
           schema:
-            type: number
+            type: integer
+            format: int64
+            minimum: 1
+      operationId: priceQuery
       tags:
-        - pricing-info-controller_v1
+        - price-controller_v1
       responses:
         '200':
           description: Successful response
@@ -39,27 +45,16 @@ paths:
                   method: "GET"
                   operation: "/price-manager/v1/price"
                 data:
-                  - product_id: 35455
-                    brand_id: 1
+                  - product_id: "35455"
+                    brand_id: "1"
                     fee_id: 1
-                    start_date: "2020-06-14 00:00:00"
-                    end_date: "2020-12-31 23:59:59"
+                    start_date: "2020-06-14T00:00:00"
+                    end_date: "2020-12-31T23:59:59"
                     final_amount: 120.99
                     currency: "EUR"
                 errors: []
               schema:
-                type: object
-                properties:
-                  meta_data:
-                    $ref: '#/components/schemas/MetaData'
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/DataItem'
-                  errors:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ErrorItem'
+                $ref: '#/components/schemas/PriceQueryDTO'
         '400':
           description: Bad Request
           content:
@@ -73,17 +68,7 @@ paths:
                   - code: "400_ERROR"
                     description: "Parameter <product_id> is required."
               schema:
-                type: object
-                properties:
-                  meta_data:
-                    $ref: '#/components/schemas/MetaData'
-                  data:
-                    type: array
-                    items: {}
-                  errors:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ErrorItem'
+                $ref: '#/components/schemas/PriceQueryDTO'
         '404':
           description: Not Found
           content:
@@ -97,17 +82,7 @@ paths:
                   - code: "404_ERROR"
                     description: "Not data found for given parameters."
               schema:
-                type: object
-                properties:
-                  meta_data:
-                    $ref: '#/components/schemas/MetaData'
-                  data:
-                    type: array
-                    items: {}
-                  errors:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ErrorItem'
+                $ref: '#/components/schemas/PriceQueryDTO'
         '500':
           description: Internal Server Error
           content:
@@ -121,20 +96,21 @@ paths:
                   - code: "500_ERROR"
                     description: "Internal server error"
               schema:
-                type: object
-                properties:
-                  meta_data:
-                    $ref: '#/components/schemas/MetaData'
-                  data:
-                    type: array
-                    items: {}
-                  errors:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ErrorItem'
+                $ref: '#/components/schemas/PriceQueryDTO'
 components:
   schemas:
-    MetaData:
+    PriceQueryDTO:
+      type: object
+      properties:
+        meta_data:
+          $ref: '#/components/schemas/MetaDataDTO'
+        data:
+          $ref: '#/components/schemas/PriceFeeDTO'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorItemDTO'
+    MetaDataDTO:
       type: object
       properties:
         method:
@@ -143,19 +119,21 @@ components:
         operation:
           description: Operation path
           type: string
-
-    DataItem:
+    PriceFeeDTO:
       type: object
       properties:
         product_id:
           description: Product identifier
-          type: number
+          type: integer
+          format: int64
         brand_id:
           description: Brand identifier
-          type: number
+          type: integer
+          format: int64
         fee_id:
           description: The identifier of the fee that is going to be applied
-          type: number
+          type: integer
+          format: int64
         start_date:
           description: A date (ISO 8601 format with time in UTC) where the fee starts to apply to the product
           type: string
@@ -165,10 +143,11 @@ components:
         final_amount:
           description: The final amount of the product (PVP)
           type: number
+          format: float
         currency:
           description: The currency of the final amount of the product
           type: string
-    ErrorItem:
+    ErrorItemDTO:
       type: object
       properties:
         code:
@@ -176,4 +155,4 @@ components:
         description:
           type: string
 tags:
-  - name: pricing-info-controller_v1
+  - name: price-manager-controller_v1
