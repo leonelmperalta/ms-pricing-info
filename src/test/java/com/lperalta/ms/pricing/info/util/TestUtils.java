@@ -1,7 +1,7 @@
 package com.lperalta.ms.pricing.info.util;
 
 import com.lperalta.ms.pricing.info.prices.domain.model.PriceQuery;
-import com.lperalta.ms.pricing.info.prices.infraestructure.in.dto.PriceQueryResponseDTO;
+import com.lperalta.ms.pricing.info.prices.infraestructure.in.dto.PriceQueryDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -127,15 +127,16 @@ public class TestUtils {
         return priceQueries;
     }
 
-    public static PriceQueryResponseDTO getPriceQueryResponse() {
-        return PriceQueryResponseDTO.builder()
-                .applicationEndDate("2020-12-31T23:59:59")
-                .applicationStartDate("2020-6-15T16:00:00")
+    public static PriceQueryDTO getPriceQueryResponse() {
+        return PriceQueryDTO.builder()
+                .endDate("2020-12-31 23:59:59")
+                .startDate("2020-6-15 16:00:00")
                 .brandId(1L)
                 .currency("EUR")
                 .feeId(4L)
-                .finalPrice(BigDecimal.valueOf(38.95))
+                .finalAmount(38.95F)
                 .productId(35455L)
                 .build();
+
     }
 }

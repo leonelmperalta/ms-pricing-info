@@ -3,7 +3,7 @@ package com.lperalta.ms.pricing.info.prices.infraestructure.in.controller;
 import com.lperalta.ms.pricing.info.prices.application.exception.NotDataFoundException;
 import com.lperalta.ms.pricing.info.prices.application.service.PriceQueryService;
 import com.lperalta.ms.pricing.info.prices.domain.model.PriceQuery;
-import com.lperalta.ms.pricing.info.prices.infraestructure.in.controller.advice.CustomResponseHandler;
+import com.lperalta.ms.pricing.info.prices.infraestructure.in.controller.advice.ExceptionController;
 import com.lperalta.ms.pricing.info.prices.infraestructure.in.mapper.PriceQueryMapper;
 import com.lperalta.ms.pricing.info.util.TestUtils;
 import org.hamcrest.CoreMatchers;
@@ -20,8 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -49,7 +47,7 @@ class PriceControllerIntegrationTest {
     @BeforeEach
     public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(priceController)
-                .setControllerAdvice(new CustomResponseHandler())
+                .setControllerAdvice(new ExceptionController())
                 .build();
     }
 
@@ -59,7 +57,7 @@ class PriceControllerIntegrationTest {
 
         Mockito.when(this.priceQueryService.priceQuery(eq(1L), eq(35455L), eq("2020-06-14 16:00:00")))
                 .thenReturn(priceQuery);
-        Mockito.when(this.priceQueryMapper.toPriceQueryResponse(eq(priceQuery)))
+        Mockito.when(this.priceQueryMapper.toDto(eq(priceQuery)))
                 .thenReturn(TestUtils.getPriceQueryResponse());
 
 
@@ -70,11 +68,8 @@ class PriceControllerIntegrationTest {
                         .queryParam("application_date", "2020-06-14 16:00:00")
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.meta_data.method", CoreMatchers.is("GET")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.meta_data.operation", CoreMatchers.is("/pricing-info/v1/price")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].fee_id", CoreMatchers.is(4)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].final_price", CoreMatchers.is(38.95)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", CoreMatchers.is(new ArrayList<>())));
+                .andExpect(MockMvcResultMatchers.jsonPath("fee_id", CoreMatchers.is(4)))
+                .andExpect(MockMvcResultMatchers.jsonPath("final_amount", CoreMatchers.is(38.95)));
     }
 
     @Test
@@ -86,9 +81,6 @@ class PriceControllerIntegrationTest {
                                 .queryParam("application_date", "2020-06-14 16:00:00")
                                 .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.meta_data.method", CoreMatchers.is("GET")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.meta_data.operation", CoreMatchers.is("/pricing-info/v1/price")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data", CoreMatchers.is(new ArrayList<>())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].code", CoreMatchers.is("ERROR_400")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].description", CoreMatchers.is("<brand_id> has an invalid type.")));
     }
@@ -104,9 +96,6 @@ class PriceControllerIntegrationTest {
                                 .queryParam("application_date", "2020-06-14 16:00:00")
                                 .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.meta_data.method", CoreMatchers.is("GET")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.meta_data.operation", CoreMatchers.is("/pricing-info/v1/price")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data", CoreMatchers.is(new ArrayList<>())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].code", CoreMatchers.is("ERROR_404")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].description", CoreMatchers.is("Not data found for given parameters")));
     }

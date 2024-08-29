@@ -1,6 +1,6 @@
 package com.lperalta.ms.pricing.info.prices.infraestructure.in.controller;
 
-import com.lperalta.ms.pricing.info.prices.infraestructure.in.controller.advice.CustomResponseHandler;
+import com.lperalta.ms.pricing.info.prices.infraestructure.in.controller.advice.ExceptionController;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -29,7 +30,7 @@ public class PriceQueryIntegrationTest {
     @BeforeEach
     public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(priceController)
-                .setControllerAdvice(new CustomResponseHandler())
+                .setControllerAdvice(new ExceptionController())
                 .build();
     }
 
@@ -59,10 +60,10 @@ public class PriceQueryIntegrationTest {
                                 .queryParam("application_date", "2020-06-14 10:00:00")
                                 .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].fee_id", CoreMatchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].final_price", CoreMatchers.is(35.5)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].brand_id", CoreMatchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].product_id", CoreMatchers.is(35455)));
+                .andExpect(MockMvcResultMatchers.jsonPath("fee_id", CoreMatchers.is(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("final_amount", CoreMatchers.is(35.5)))
+                .andExpect(MockMvcResultMatchers.jsonPath("brand_id", CoreMatchers.is(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("product_id", CoreMatchers.is(35455)));
     }
 
     /**
@@ -91,10 +92,11 @@ public class PriceQueryIntegrationTest {
                                 .queryParam("application_date", "2020-06-14 16:00:00")
                                 .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].fee_id", CoreMatchers.is(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].final_price", CoreMatchers.is(25.45)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].brand_id", CoreMatchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].product_id", CoreMatchers.is(35455)));
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.jsonPath("fee_id", CoreMatchers.is(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("final_amount", CoreMatchers.is(25.45)))
+                .andExpect(MockMvcResultMatchers.jsonPath("brand_id", CoreMatchers.is(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("product_id", CoreMatchers.is(35455)));
     }
 
     /**
@@ -122,10 +124,10 @@ public class PriceQueryIntegrationTest {
                                 .queryParam("application_date", "2020-06-14 21:00:00")
                                 .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].fee_id", CoreMatchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].final_price", CoreMatchers.is(35.5)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].brand_id", CoreMatchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].product_id", CoreMatchers.is(35455)));
+                .andExpect(MockMvcResultMatchers.jsonPath("fee_id", CoreMatchers.is(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("final_amount", CoreMatchers.is(35.5)))
+                .andExpect(MockMvcResultMatchers.jsonPath("brand_id", CoreMatchers.is(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("product_id", CoreMatchers.is(35455)));
     }
 
     /**
@@ -154,10 +156,10 @@ public class PriceQueryIntegrationTest {
                                 .queryParam("application_date", "2020-06-15 10:00:00")
                                 .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].fee_id", CoreMatchers.is(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].final_price", CoreMatchers.is(30.5)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].brand_id", CoreMatchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].product_id", CoreMatchers.is(35455)));
+                .andExpect(MockMvcResultMatchers.jsonPath("fee_id", CoreMatchers.is(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("final_amount", CoreMatchers.is(30.5)))
+                .andExpect(MockMvcResultMatchers.jsonPath("brand_id", CoreMatchers.is(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("product_id", CoreMatchers.is(35455)));
     }
 
     /**
@@ -186,10 +188,10 @@ public class PriceQueryIntegrationTest {
                                 .queryParam("application_date", "2020-06-16 21:00:00")
                                 .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].fee_id", CoreMatchers.is(4)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].final_price", CoreMatchers.is(38.95)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].brand_id", CoreMatchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].product_id", CoreMatchers.is(35455)));
+                .andExpect(MockMvcResultMatchers.jsonPath("fee_id", CoreMatchers.is(4)))
+                .andExpect(MockMvcResultMatchers.jsonPath("final_amount", CoreMatchers.is(38.95)))
+                .andExpect(MockMvcResultMatchers.jsonPath("brand_id", CoreMatchers.is(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("product_id", CoreMatchers.is(35455)));
     }
 
 

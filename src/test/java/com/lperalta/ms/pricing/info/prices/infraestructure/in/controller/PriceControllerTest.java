@@ -5,6 +5,7 @@ import com.lperalta.ms.pricing.info.prices.application.exception.NotDataFoundExc
 import com.lperalta.ms.pricing.info.prices.application.exception.PriceConfigurationErrorException;
 import com.lperalta.ms.pricing.info.prices.application.service.PriceQueryService;
 import com.lperalta.ms.pricing.info.prices.domain.model.PriceQuery;
+import com.lperalta.ms.pricing.info.prices.infraestructure.in.dto.PriceQueryDTO;
 import com.lperalta.ms.pricing.info.prices.infraestructure.in.dto.PriceQueryResponseDTO;
 import com.lperalta.ms.pricing.info.prices.infraestructure.in.mapper.PriceQueryMapper;
 import com.lperalta.ms.pricing.info.util.TestUtils;
@@ -35,7 +36,7 @@ class PriceControllerTest {
 
     @Test
     public void givenValidRequest_whenPriceQuery_thenReturnPriceResponse()
-            throws InternalServerErrorException, NotDataFoundException, PriceConfigurationErrorException {
+            throws Exception {
         Long brandId = 1L;
         Long productId = 35455L;
         String applicationDate = "2020-06-15 18:00:00";
@@ -44,10 +45,10 @@ class PriceControllerTest {
         Mockito.when(this.priceQueryService.priceQuery(eq(brandId), eq(productId), eq(applicationDate)))
                 .thenReturn(priceQuery);
 
-        Mockito.when(this.priceQueryMapper.toPriceQueryResponse(priceQuery))
-                .thenReturn(TestUtils.getPriceQueryResponse());
+        Mockito.when(this.priceQueryMapper.toDto(priceQuery))
+                .thenReturn(PriceQueryMapper.INSTANCE.toDto(priceQuery));
 
-        ResponseEntity<PriceQueryResponseDTO> response = this.priceController.priceQuery(brandId, productId, applicationDate);
+        ResponseEntity<PriceQueryDTO> response = this.priceController.priceQuery(applicationDate, productId, brandId);
 
         assertEquals(HttpStatus.OK.value(), response.getStatusCode().value());
         assertEquals(1L, Objects.requireNonNull(response.getBody()).getBrandId());
