@@ -1,9 +1,9 @@
 openapi: 3.0.0
 info:
-  title: price-manager
+  title: pricing-info
   version: 1.0.0
 paths:
-  /price-manager/v1/price:
+  /pricing-info/v1/price:
     get:
       summary: Get Price and Fee Information
       description: |
@@ -34,25 +34,20 @@ paths:
             minimum: 1
       operationId: priceQuery
       tags:
-        - price-controller_v1
+        - price-info-controller_v1
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               example:
-                meta_data:
-                  method: "GET"
-                  operation: "/price-manager/v1/price"
-                data:
-                  - product_id: "35455"
-                    brand_id: "1"
-                    fee_id: 1
-                    start_date: "2020-06-14T00:00:00"
-                    end_date: "2020-12-31T23:59:59"
-                    final_amount: 120.99
-                    currency: "EUR"
-                errors: []
+                product_id: "35455"
+                brand_id: "1"
+                fee_id: 1
+                start_date: "2020-06-14T00:00:00"
+                end_date: "2020-12-31T23:59:59"
+                final_amount: 120.99
+                currency: "EUR"
               schema:
                 $ref: '#/components/schemas/PriceQueryDTO'
         '400':
@@ -60,66 +55,34 @@ paths:
           content:
             application/json:
               example:
-                meta_data:
-                  method: "GET"
-                  operation: "/price-manager/v1/price"
-                data: []
                 errors:
                   - code: "400_ERROR"
                     description: "Parameter <product_id> is required."
               schema:
-                $ref: '#/components/schemas/PriceQueryDTO'
+                $ref: '#/components/schemas/ErrorResponseDTO'
         '404':
           description: Not Found
           content:
             application/json:
               example:
-                meta_data:
-                  method: "GET"
-                  operation: "/price-manager/v1/price"
-                data: []
                 errors:
                   - code: "404_ERROR"
                     description: "Not data found for given parameters."
               schema:
-                $ref: '#/components/schemas/PriceQueryDTO'
+                $ref: '#/components/schemas/ErrorResponseDTO'
         '500':
           description: Internal Server Error
           content:
             application/json:
               example:
-                meta_data:
-                  method: "GET"
-                  operation: "/price-manager/v1/price"
-                data: []
                 errors:
                   - code: "500_ERROR"
                     description: "Internal server error"
               schema:
-                $ref: '#/components/schemas/PriceQueryDTO'
+                $ref: '#/components/schemas/ErrorResponseDTO'
 components:
   schemas:
     PriceQueryDTO:
-      type: object
-      properties:
-        meta_data:
-          $ref: '#/components/schemas/MetaDataDTO'
-        data:
-          $ref: '#/components/schemas/PriceFeeDTO'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorItemDTO'
-    MetaDataDTO:
-      type: object
-      properties:
-        method:
-          description: Operation method
-          type: string
-        operation:
-          description: Operation path
-          type: string
-    PriceFeeDTO:
       type: object
       properties:
         product_id:
@@ -147,6 +110,13 @@ components:
         currency:
           description: The currency of the final amount of the product
           type: string
+    ErrorResponseDTO:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorItemDTO'
     ErrorItemDTO:
       type: object
       properties:
@@ -155,4 +125,4 @@ components:
         description:
           type: string
 tags:
-  - name: price-manager-controller_v1
+  - name: price-info-controller_v1
