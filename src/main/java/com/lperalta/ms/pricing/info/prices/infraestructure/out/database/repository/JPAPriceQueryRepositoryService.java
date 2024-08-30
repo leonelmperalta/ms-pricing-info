@@ -3,7 +3,7 @@ package com.lperalta.ms.pricing.info.prices.infraestructure.out.database.reposit
 import com.lperalta.ms.pricing.info.prices.domain.model.PriceQuery;
 import com.lperalta.ms.pricing.info.prices.domain.port.out.PriceQueryRepository;
 import com.lperalta.ms.pricing.info.prices.infraestructure.out.database.dbo.JPAPriceQueryDAO;
-import com.lperalta.ms.pricing.info.prices.infraestructure.out.database.mapper.JPAPriceQueryDAOMapper;
+import com.lperalta.ms.pricing.info.prices.infraestructure.out.database.mapper.JPAPriceQueryMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,10 +13,10 @@ import java.util.List;
 public class JPAPriceQueryRepositoryService implements PriceQueryRepository {
 
     private final JPAPriceQueryRepository priceRepository;
-    private final JPAPriceQueryDAOMapper priceQueryMapper;
+    private final JPAPriceQueryMapper priceQueryMapper;
 
     public JPAPriceQueryRepositoryService(JPAPriceQueryRepository priceRepository,
-                                          JPAPriceQueryDAOMapper priceQueryMapper) {
+                                          JPAPriceQueryMapper priceQueryMapper) {
         this.priceRepository = priceRepository;
         this.priceQueryMapper = priceQueryMapper;
     }

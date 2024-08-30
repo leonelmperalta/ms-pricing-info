@@ -7,9 +7,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
-public interface JPAPriceQueryDAOMapper {
+public interface JPAPriceQueryMapper {
 
-    JPAPriceQueryDAOMapper INSTANCE = Mappers.getMapper(JPAPriceQueryDAOMapper.class);
+    JPAPriceQueryMapper INSTANCE = Mappers.getMapper(JPAPriceQueryMapper.class);
 
     PriceQuery toPriceQuery(JPAPriceQueryDAO jpaPriceQueryDAO);
 }
