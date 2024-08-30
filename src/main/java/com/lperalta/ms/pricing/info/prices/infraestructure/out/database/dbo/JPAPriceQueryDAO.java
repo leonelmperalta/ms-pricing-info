@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(schema = "ECOMMERCE", name = "PRICES")
-public class SpringDataPriceEntity {
+public class JPAPriceQueryDAO {
 
     @Id
     private Long id;
