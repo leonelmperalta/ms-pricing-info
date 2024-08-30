@@ -4,8 +4,9 @@ import com.lperalta.ms.pricing.info.prices.application.exception.InternalServerE
 import com.lperalta.ms.pricing.info.prices.application.exception.NotDataFoundException;
 import com.lperalta.ms.pricing.info.prices.application.exception.PriceConfigurationErrorException;
 import com.lperalta.ms.pricing.info.prices.application.mapper.DateConverter;
+import com.lperalta.ms.pricing.info.prices.application.service.PriceQueryService;
 import com.lperalta.ms.pricing.info.prices.domain.model.PriceQuery;
-import com.lperalta.ms.pricing.info.prices.domain.repository.PriceQueryRepositoryPort;
+import com.lperalta.ms.pricing.info.prices.domain.port.out.PriceQueryRepository;
 import com.lperalta.ms.pricing.info.prices.domain.service.PricePriorityService;
 import com.lperalta.ms.pricing.info.util.TestUtils;
 import org.junit.jupiter.api.Test;
@@ -24,21 +25,21 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
-@SpringBootTest(classes = {PriceQueryServiceImpl.class})
-class PriceQueryServiceImplTest {
+@SpringBootTest(classes = {PriceQueryService.class})
+class PriceQueryServiceTest {
 
     @MockBean
     private PricePriorityService pricePriorityService;
 
     @MockBean
-    private PriceQueryRepositoryPort priceQueryRepository;
+    private PriceQueryRepository priceQueryRepository;
 
     @MockBean
     private DateConverter dateConverter;
 
     @Autowired
     @InjectMocks
-    private PriceQueryServiceImpl priceQueryService;
+    private PriceQueryService priceQueryService;
 
     @Test
     public void givenValidRequest_whenPriceQuery_thenReturnFirstMatchingPrice()
@@ -53,7 +54,7 @@ class PriceQueryServiceImplTest {
 
         Mockito.when(this.dateConverter.toLocalDateTime(eq(applicationDate))).thenReturn(applicationDateAsDate);
 
-        Mockito.when(this.priceQueryRepository.findByProductIdAndBrandIdAndApplicationDatesBetween(
+        Mockito.when(this.priceQueryRepository.findPrices(
                 eq(productId), eq(brandId), eq(applicationDateAsDate)
         )).thenReturn(priceQueries);
 
@@ -77,7 +78,7 @@ class PriceQueryServiceImplTest {
 
         Mockito.when(this.dateConverter.toLocalDateTime(eq(applicationDate))).thenReturn(applicationDateAsDate);
 
-        Mockito.when(this.priceQueryRepository.findByProductIdAndBrandIdAndApplicationDatesBetween(
+        Mockito.when(this.priceQueryRepository.findPrices(
                 eq(productId), eq(brandId), eq(applicationDateAsDate)
         )).thenReturn(priceQueries);
 
@@ -103,7 +104,7 @@ class PriceQueryServiceImplTest {
 
         Mockito.when(this.dateConverter.toLocalDateTime(eq(applicationDate))).thenReturn(applicationDateAsDate);
 
-        Mockito.when(this.priceQueryRepository.findByProductIdAndBrandIdAndApplicationDatesBetween(
+        Mockito.when(this.priceQueryRepository.findPrices(
                 eq(productId), eq(brandId), eq(applicationDateAsDate)
         )).thenReturn(priceQueries);
 
