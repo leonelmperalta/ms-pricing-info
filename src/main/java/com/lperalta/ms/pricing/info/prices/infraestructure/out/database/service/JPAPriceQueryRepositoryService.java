@@ -1,9 +1,10 @@
-package com.lperalta.ms.pricing.info.prices.infraestructure.out.database.repository;
+package com.lperalta.ms.pricing.info.prices.infraestructure.out.database.service;
 
 import com.lperalta.ms.pricing.info.prices.domain.model.PriceQuery;
 import com.lperalta.ms.pricing.info.prices.domain.port.out.PriceQueryRepository;
 import com.lperalta.ms.pricing.info.prices.infraestructure.out.database.dbo.JPAPriceQueryDAO;
 import com.lperalta.ms.pricing.info.prices.infraestructure.out.database.mapper.JPAPriceQueryMapper;
+import com.lperalta.ms.pricing.info.prices.infraestructure.out.database.repository.JPAPriceQueryRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
