@@ -1,12 +1,8 @@
 package com.lperalta.ms.pricing.info.prices.infraestructure.in.controller;
 
-import com.lperalta.ms.pricing.info.prices.application.exception.InternalServerErrorException;
-import com.lperalta.ms.pricing.info.prices.application.exception.NotDataFoundException;
-import com.lperalta.ms.pricing.info.prices.application.exception.PriceConfigurationErrorException;
-import com.lperalta.ms.pricing.info.prices.application.service.PriceQueryService;
+import com.lperalta.ms.pricing.info.prices.domain.port.in.PriceQueryUseCase;
 import com.lperalta.ms.pricing.info.prices.domain.model.PriceQuery;
 import com.lperalta.ms.pricing.info.prices.infraestructure.in.dto.PriceQueryDTO;
-import com.lperalta.ms.pricing.info.prices.infraestructure.in.dto.PriceQueryResponseDTO;
 import com.lperalta.ms.pricing.info.prices.infraestructure.in.mapper.PriceQueryMapper;
 import com.lperalta.ms.pricing.info.util.TestUtils;
 import org.junit.jupiter.api.Test;
@@ -26,7 +22,7 @@ import static org.mockito.ArgumentMatchers.eq;
 class PriceControllerTest {
 
     @MockBean
-    private PriceQueryService priceQueryService;
+    private PriceQueryUseCase priceQueryService;
 
     @MockBean
     private PriceQueryMapper priceQueryMapper;

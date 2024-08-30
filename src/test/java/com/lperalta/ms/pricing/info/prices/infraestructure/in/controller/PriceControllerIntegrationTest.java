@@ -1,7 +1,7 @@
 package com.lperalta.ms.pricing.info.prices.infraestructure.in.controller;
 
 import com.lperalta.ms.pricing.info.prices.application.exception.NotDataFoundException;
-import com.lperalta.ms.pricing.info.prices.application.service.PriceQueryService;
+import com.lperalta.ms.pricing.info.prices.domain.port.in.PriceQueryUseCase;
 import com.lperalta.ms.pricing.info.prices.domain.model.PriceQuery;
 import com.lperalta.ms.pricing.info.prices.infraestructure.in.controller.advice.ExceptionController;
 import com.lperalta.ms.pricing.info.prices.infraestructure.in.mapper.PriceQueryMapper;
@@ -35,7 +35,7 @@ class PriceControllerIntegrationTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PriceQueryService priceQueryService;
+    private PriceQueryUseCase priceQueryUseCase;
 
     @MockBean
     private PriceQueryMapper priceQueryMapper;
@@ -55,7 +55,7 @@ class PriceControllerIntegrationTest {
     public void givenValidRequest_whenQuery_thenReturn200() throws Exception {
         PriceQuery priceQuery = TestUtils.singlePriceQuery().get(0);
 
-        Mockito.when(this.priceQueryService.priceQuery(eq(1L), eq(35455L), eq("2020-06-14 16:00:00")))
+        Mockito.when(this.priceQueryUseCase.priceQuery(eq(1L), eq(35455L), eq("2020-06-14 16:00:00")))
                 .thenReturn(priceQuery);
         Mockito.when(this.priceQueryMapper.toDto(eq(priceQuery)))
                 .thenReturn(TestUtils.getPriceQueryResponse());
@@ -87,7 +87,7 @@ class PriceControllerIntegrationTest {
 
     @Test
     public void givenInvalidRequest_whenQuery_thenReturn404() throws Exception {
-        Mockito.when(this.priceQueryService.priceQuery(any(), any(), any())).thenThrow(NotDataFoundException.class);
+        Mockito.when(this.priceQueryUseCase.priceQuery(any(), any(), any())).thenThrow(NotDataFoundException.class);
 
         mockMvc.perform(
                         get("/pricing-info/v1/price")
