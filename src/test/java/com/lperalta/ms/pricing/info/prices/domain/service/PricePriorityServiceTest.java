@@ -39,17 +39,13 @@ class PricePriorityServiceTest {
         PriceQuery price3 = PriceQuery.builder().priority(3).build();
         List<PriceQuery> prices = Arrays.asList(price1, price2, price3);
 
-        assertThrows(PriceConfigurationErrorException.class, () -> {
-            pricePriorityService.getHighestPriorityPrice(prices);
-        });
+        assertThrows(PriceConfigurationErrorException.class, () -> pricePriorityService.getHighestPriorityPrice(prices));
     }
 
     @Test
     void testGetHighestPriorityPrice_EmptyList_ThrowsNotDataFoundException() {
         List<PriceQuery> prices = List.of();
 
-        assertThrows(NotDataFoundException.class, () -> {
-            pricePriorityService.getHighestPriorityPrice(prices);
-        });
+        assertThrows(NotDataFoundException.class, () -> pricePriorityService.getHighestPriorityPrice(prices));
     }
 }
